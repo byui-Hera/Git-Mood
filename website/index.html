@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Git-Mood — Commit Insights</title>
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="icon" type="image/svg+xml" href="logo.svg?v=2">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a class="brand" href="/" aria-label="Git-Mood home">
+        <img class="brand-logo" src="logo.svg?v=2" alt="">
+        <span>git-mood</span>
+      </a>
+      <span class="local-badge"><span class="local-dot"></span> LOCAL ANALYSIS</span>
+    </div>
+
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">ENGINEERING INSIGHTS · LOCAL FIRST</p>
+        <h1>Understand your<br><span>commit rhythm.</span></h1>
+        <p class="intro">A clear view of commit timing, possible fixes, and code changes in your Git history.</p>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <svg viewBox="0 0 440 260" role="presentation">
+          <defs>
+            <linearGradient id="signal-line" x1="30" y1="0" x2="405" y2="0" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#8A91FF"/>
+              <stop offset=".72" stop-color="#C3C5FF"/>
+              <stop offset="1" stop-color="#E9A875"/>
+            </linearGradient>
+            <linearGradient id="signal-fill" x1="220" y1="70" x2="220" y2="220" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#8187FF" stop-opacity=".22"/>
+              <stop offset="1" stop-color="#8187FF" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <rect width="440" height="260" rx="20" fill="#202536"/>
+          <path d="M28 72H412M28 118H412M28 164H412M28 210H412" stroke="#FFFFFF" stroke-opacity=".08"/>
+          <path d="M76 52V220M160 52V220M244 52V220M328 52V220" stroke="#FFFFFF" stroke-opacity=".06"/>
+          <text x="30" y="36" fill="#C5C9D7" font-size="10" font-family="Arial, sans-serif" letter-spacing="2">COMMIT SIGNAL</text>
+          <text x="355" y="36" fill="#C5C9D7" font-size="10" font-family="Arial, sans-serif" letter-spacing="1">24 HOURS</text>
+          <path d="M30 187C62 185 68 145 98 151C127 157 130 102 160 110C189 118 190 175 219 168C251 160 251 91 282 97C314 103 310 139 342 130C369 123 374 72 410 68V220H30V187Z" fill="url(#signal-fill)"/>
+          <path d="M30 187C62 185 68 145 98 151C127 157 130 102 160 110C189 118 190 175 219 168C251 160 251 91 282 97C314 103 310 139 342 130C369 123 374 72 410 68" stroke="url(#signal-line)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="98" cy="151" r="5" fill="#202536" stroke="#A8ACFF" stroke-width="2.5"/>
+          <circle cx="160" cy="110" r="5" fill="#202536" stroke="#A8ACFF" stroke-width="2.5"/>
+          <circle cx="282" cy="97" r="5" fill="#202536" stroke="#D7D5FF" stroke-width="2.5"/>
+          <circle cx="410" cy="68" r="6" fill="#E9A875" stroke="#202536" stroke-width="3"/>
+          <text x="30" y="240" fill="#9DA3B4" font-size="9" font-family="Arial, sans-serif">00:00</text>
+          <text x="374" y="240" fill="#9DA3B4" font-size="9" font-family="Arial, sans-serif">23:59</text>
+        </svg>
+        <div class="visual-caption"><span class="visual-caption-dot"></span><span>YOUR HISTORY, MADE VISIBLE</span></div>
+      </div>
+    </header>
+
+    <section class="panel form-panel" aria-labelledby="analyze-title">
+      <div class="form-copy">
+        <p class="eyebrow">01 / SELECT A REPOSITORY</p>
+        <h2 id="analyze-title">Build your report</h2>
+        <p class="help">History is read locally. Your project files are not uploaded.</p>
+      </div>
+      <form id="analyze-form">
+        <div class="field">
+          <label for="repo-path">Repository folder</label>
+          <input id="repo-path" name="repo" type="text" placeholder="C:\Projects\my-project" required>
+        </div>
+        <div class="field">
+          <label for="author-name">Author <span>OPTIONAL</span></label>
+          <input id="author-name" name="author" type="text" placeholder="All authors">
+        </div>
+        <button id="analyze-button" type="submit">Analyze history <span aria-hidden="true">↗</span></button>
+      </form>
+      <p id="status" class="status" role="status" aria-live="polite">Enter the folder path of a Git project.</p>
+    </section>
+
+    <section id="results" class="results hidden" aria-live="polite">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">02 / REPOSITORY REPORT</p>
+          <h2>Commit quality overview</h2>
+        </div>
+        <p id="author-label" class="author-label"></p>
+      </div>
+
+      <div class="cards" aria-label="Repository summary">
+        <article class="metric-card">
+          <span class="metric-label">TOTAL COMMITS</span>
+          <strong id="total-commits">0</strong>
+          <small>In the selected history</small>
+        </article>
+        <article class="metric-card">
+          <span class="metric-label">BUG-FIX RATIO</span>
+          <strong id="bug-ratio">0%</strong>
+          <small id="bug-ratio-detail">Possible fixes by message keywords</small>
+        </article>
+        <article class="metric-card metric-featured">
+          <span class="metric-label">PEAK PRODUCTIVITY</span>
+          <strong id="peak-hour">—</strong>
+          <small>Hour with the most commits</small>
+        </article>
+        <article class="metric-card metric-risk">
+          <span class="metric-label">FIXES AFTER MIDNIGHT</span>
+          <strong id="after-midnight-share">—</strong>
+          <small id="after-midnight-detail">Share of possible fixes from 12–4:59 AM</small>
+        </article>
+      </div>
+
+      <section class="insight-panel" aria-labelledby="insight-title">
+        <div class="insight-symbol" aria-hidden="true">↗</div>
+        <div>
+          <p class="eyebrow" id="insight-title">A PATTERN IN YOUR HISTORY</p>
+          <p class="insight-copy" id="personal-insight">Analyze a repository to see its commit pattern.</p>
+        </div>
+      </section>
+
+      <div class="section-kicker"><span>ACTIVITY PATTERNS</span><span>COMMIT COUNT AND POSSIBLE FIXES</span></div>
+      <div class="chart-grid">
+        <section class="panel chart-panel">
+          <div class="chart-heading"><div><p class="eyebrow">TIME OF DAY</p><h3>Commits by hour</h3></div><span class="chart-unit">LOCAL TIME</span></div>
+          <div id="hour-chart" class="chart"></div>
+        </section>
+        <section class="panel chart-panel">
+          <div class="chart-heading"><div><p class="eyebrow">WEEKLY RHYTHM</p><h3>Commits by weekday</h3></div><span class="chart-unit">MON–SUN</span></div>
+          <div id="day-chart" class="chart"></div>
+        </section>
+      </div>
+
+      <section class="panel commit-panel">
+        <div class="table-heading"><div><p class="eyebrow">LATEST ACTIVITY</p><h3>Commit history</h3></div><span class="table-note">Message patterns are estimates</span></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Date and time</th><th>Message</th><th>Lines + / -</th></tr></thead>
+            <tbody id="commit-list"></tbody>
+          </table>
+        </div>
+      </section>
+      <p class="disclaimer">A “possible fix” is estimated from commit-message keywords. Peak activity uses commit volume as a proxy; these patterns do not prove that a time caused bugs or measure burnout.</p>
+    </section>
+  </main>
+</body>
+</html>

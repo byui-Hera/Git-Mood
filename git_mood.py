@@ -1,4 +1,4 @@
-"""Show commit messages and simple Git history summaries."""
+"""Read Git commits and print simple summaries."""
 
 from datetime import datetime
 import subprocess
@@ -6,7 +6,7 @@ import sys
 
 
 def get_commits(repo_folder, author_name):
-    """Ask Git for commit dates, messages, and changed-line counts."""
+    """Get commit dates, messages, and line counts from Git."""
     command = [
         "git",
         "-C",
@@ -17,7 +17,7 @@ def get_commits(repo_folder, author_name):
         "--format=COMMIT|%aI|%s",
     ]
 
-    # Add this option when the user wants to see one author's commits.
+    # If a name was given, ask Git for that author's commits.
     if author_name:
         command.append(f"--author={author_name}")
 
@@ -27,11 +27,11 @@ def get_commits(repo_folder, author_name):
         text=True,
     )
 
-    # Return an empty list if Git could not read the history.
+    # If Git found nothing, return an empty list.
     if result.returncode != 0 or not result.stdout.strip():
         return []
 
-    # Turn Git's text into a list of commit records.
+    # Make a list to store the commits Git returns.
     commits = []
     current_commit = None
 
@@ -48,10 +48,10 @@ def get_commits(repo_folder, author_name):
                 "removed": 0,
             }
         elif current_commit is not None and "\t" in line:
-            # Git lists added lines, removed lines, and the file name.
+            # Git gives us added lines, removed lines, and a file name.
             added, removed, _ = line.split("\t", 2)
 
-            # Binary files use a dash instead of a line count.
+            # A dash means Git could not count lines in that file.
             if added.isdigit() and removed.isdigit():
                 current_commit["added"] += int(added)
                 current_commit["removed"] += int(removed)
@@ -63,8 +63,8 @@ def get_commits(repo_folder, author_name):
 
 
 def add_commit(summary, group, is_fix, is_short, added, removed):
-    """Add one commit and its changed lines to a summary."""
-    # Start the counts at zero the first time we see this group.
+    """Add one commit to the counts for its hour or weekday."""
+    # Create the counts the first time we see this group.
     if group not in summary:
         summary[group] = {
             "commits": 0,
@@ -84,7 +84,7 @@ def add_commit(summary, group, is_fix, is_short, added, removed):
 
 
 def print_summary(title, summary, group_names):
-    """Print the counts for each hour or weekday."""
+    """Print the summary counts."""
     print(f"\n{title}:")
 
     for group in sorted(summary):
@@ -100,7 +100,7 @@ def print_summary(title, summary, group_names):
 
 
 def main():
-    """Read commits, count them, and print the results."""
+    """Run Git-Mood."""
     # Use the folder path after the script name, or use the current folder.
     if len(sys.argv) > 1:
         repo_folder = sys.argv[1]
@@ -118,7 +118,7 @@ def main():
         print("I couldn't find matching commits in that folder.")
         return
 
-    # These words are a rough guess that a commit is about a fix.
+    # These words help us guess if a message is about a fix.
     fix_words = ("fix", "bug", "oops", "error")
     hour_counts = {}
     day_counts = {}
@@ -128,12 +128,12 @@ def main():
     else:
         print("Your commits (all authors):")
 
-    # Read and count one commit at a time.
+    # Look at each commit and add it to the summaries.
     for commit in lines:
         message = commit["message"]
         commit_time = datetime.fromisoformat(commit["date"])
 
-        # Print the commit's date, time, and message.
+        # Show the date, time, and commit message.
         print(f"{commit_time:%Y-%m-%d %H:%M} | {message}")
 
         hour = commit_time.hour
@@ -141,7 +141,7 @@ def main():
         is_fix = any(word in message.lower() for word in fix_words)
         is_short = len(message.strip()) < 10
 
-        # Add the commit to the hour and weekday counts.
+        # Count this commit for its hour and weekday.
         add_commit(hour_counts, hour, is_fix, is_short, commit["added"], commit["removed"])
         add_commit(day_counts, day, is_fix, is_short, commit["added"], commit["removed"])
 
@@ -165,6 +165,6 @@ def main():
     print_summary("Commits by day of the week", day_counts, day_names)
 
 
-# Start the program when this file is run.
+# Run the program when this file is opened with Python.
 if __name__ == "__main__":
     main()
