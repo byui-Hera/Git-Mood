@@ -2,7 +2,7 @@ const form = document.querySelector("#analyze-form");
 const statusMessage = document.querySelector("#status");
 const analyzeButton = document.querySelector("#analyze-button");
 const results = document.querySelector("#results");
-const API_URL = "http://127.0.0.1:8000/api/analyze";
+const API_URL = "/api/analyze";
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -36,7 +36,9 @@ form.addEventListener("submit", async (event) => {
     showReport(report, values.get("author").trim());
     statusMessage.textContent = "Analysis complete.";
   } catch (error) {
-    statusMessage.textContent = error.message;
+    statusMessage.textContent = error instanceof TypeError
+      ? "Could not reach Git-Mood. Run 'python web_app.py' in PowerShell, then open http://127.0.0.1:8000 in Chrome or Edge."
+      : error.message;
     statusMessage.classList.add("error");
     results.classList.add("hidden");
   } finally {
