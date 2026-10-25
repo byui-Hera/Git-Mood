@@ -13,18 +13,23 @@
 <body>
   <main class="page">
     <div class="topbar">
-      <a class="brand" href="/" aria-label="Git-Mood home">
+      <a class="brand" href="/#overview" aria-label="Git-Mood home">
         <img class="brand-logo" src="logo.svg?v=2" alt="">
         <span>git-mood</span>
       </a>
-      <span class="local-badge"><span class="local-dot"></span> LOCAL ANALYSIS</span>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-link active" href="/#overview" aria-current="page">Dashboard</a>
+        <a class="nav-link" href="/#analyze-title">Analyze</a>
+        <a class="nav-link" href="methodology.html">How it works</a>
+      </nav>
+      <span class="local-badge"><span class="local-dot"></span> RUNS ON YOUR COMPUTER</span>
     </div>
 
-    <header class="hero">
+    <header class="hero" id="overview">
       <div class="hero-copy">
-        <p class="eyebrow">ENGINEERING INSIGHTS · LOCAL FIRST</p>
-        <h1>Understand your<br><span>commit rhythm.</span></h1>
-        <p class="intro">A clear view of commit timing, possible fixes, and code changes in your Git history.</p>
+      <p class="eyebrow">GIT HISTORY · RUNS ON YOUR COMPUTER</p>
+      <h1>See when and where<br><span>changes happen.</span></h1>
+      <p class="intro">Git-Mood looks at your project's saved changes. It shows when changes happen, which files change often, and which files change again soon.</p>
       </div>
       <div class="hero-visual" aria-hidden="true">
         <svg viewBox="0 0 440 260" role="presentation">
@@ -59,86 +64,109 @@
 
     <section class="panel form-panel" aria-labelledby="analyze-title">
       <div class="form-copy">
-        <p class="eyebrow">01 / SELECT A REPOSITORY</p>
-        <h2 id="analyze-title">Build your report</h2>
-        <p class="help">History is read locally. Your project files are not uploaded.</p>
+        <p class="eyebrow">01 / CHOOSE A PROJECT</p>
+        <h2 id="analyze-title">Make a report</h2>
+        <p class="help">Git-Mood reads your saved-change history on your computer. Your files are not uploaded.</p>
       </div>
       <form id="analyze-form">
         <div class="field">
-          <label for="repo-path">Repository folder</label>
+          <label for="repo-path">Git project folder</label>
           <input id="repo-path" name="repo" type="text" placeholder="C:\Projects\my-project" required>
         </div>
         <div class="field">
-          <label for="author-name">Author <span>OPTIONAL</span></label>
+          <label for="author-name">Name used in Git <span>OPTIONAL</span></label>
           <input id="author-name" name="author" type="text" placeholder="All authors">
         </div>
         <button id="analyze-button" type="submit">Analyze history <span aria-hidden="true">↗</span></button>
       </form>
-      <p id="status" class="status" role="status" aria-live="polite">Enter the folder path of a Git project.</p>
+      <p id="status" class="status" role="status" aria-live="polite">Enter the folder path of a Git project. Leave the author blank to include everyone.</p>
     </section>
 
     <section id="results" class="results hidden" aria-live="polite">
       <div class="section-heading">
         <div>
           <p class="eyebrow">02 / REPOSITORY REPORT</p>
-          <h2>Commit quality overview</h2>
+          <h2>Your project summary</h2>
         </div>
         <p id="author-label" class="author-label"></p>
       </div>
 
       <div class="cards" aria-label="Repository summary">
         <article class="metric-card">
-          <span class="metric-label">TOTAL COMMITS</span>
+          <span class="metric-label">TOTAL SAVED CHANGES</span>
           <strong id="total-commits">0</strong>
           <small>In the selected history</small>
         </article>
         <article class="metric-card">
-          <span class="metric-label">BUG-FIX RATIO</span>
+          <span class="metric-label">POSSIBLE FIX RATE</span>
           <strong id="bug-ratio">0%</strong>
           <small id="bug-ratio-detail">Possible fixes by message keywords</small>
         </article>
         <article class="metric-card metric-featured">
-          <span class="metric-label">PEAK PRODUCTIVITY</span>
+          <span class="metric-label">MOST ACTIVE HOUR</span>
           <strong id="peak-hour">—</strong>
-          <small>Hour with the most commits</small>
+          <small>Hour with the most saved changes</small>
         </article>
         <article class="metric-card metric-risk">
-          <span class="metric-label">FIXES AFTER MIDNIGHT</span>
+          <span class="metric-label">POSSIBLE FIXES AFTER MIDNIGHT</span>
           <strong id="after-midnight-share">—</strong>
           <small id="after-midnight-detail">Share of possible fixes from 12–4:59 AM</small>
         </article>
       </div>
 
+      <section class="rework-panel" aria-labelledby="rework-title">
+        <div class="rework-stat">
+        <p class="eyebrow">FILES CHANGED AGAIN SOON</p>
+          <strong id="rework-rate">—</strong>
+          <span id="rework-count">Checking changed files</span>
+        </div>
+        <div class="rework-copy">
+          <h3 id="rework-title">The same file changed within a day</h3>
+          <p>This can be part of normal work. It does not prove the first change had a bug.</p>
+        </div>
+      </section>
+
       <section class="insight-panel" aria-labelledby="insight-title">
         <div class="insight-symbol" aria-hidden="true">↗</div>
         <div>
           <p class="eyebrow" id="insight-title">A PATTERN IN YOUR HISTORY</p>
-          <p class="insight-copy" id="personal-insight">Analyze a repository to see its commit pattern.</p>
+          <p class="insight-copy" id="personal-insight">Make a report to see patterns in your saved changes.</p>
         </div>
       </section>
 
-      <div class="section-kicker"><span>ACTIVITY PATTERNS</span><span>COMMIT COUNT AND POSSIBLE FIXES</span></div>
+      <div class="section-kicker"><span>YOUR ACTIVITY</span><span>SAVED CHANGES AND POSSIBLE FIXES</span></div>
       <div class="chart-grid">
         <section class="panel chart-panel">
-          <div class="chart-heading"><div><p class="eyebrow">TIME OF DAY</p><h3>Commits by hour</h3></div><span class="chart-unit">LOCAL TIME</span></div>
+          <div class="chart-heading"><div><p class="eyebrow">TIME OF DAY</p><h3>Saved changes by hour</h3></div><span class="chart-unit">GIT TIME</span></div>
           <div id="hour-chart" class="chart"></div>
         </section>
         <section class="panel chart-panel">
-          <div class="chart-heading"><div><p class="eyebrow">WEEKLY RHYTHM</p><h3>Commits by weekday</h3></div><span class="chart-unit">MON–SUN</span></div>
+          <div class="chart-heading"><div><p class="eyebrow">EACH WEEK</p><h3>Saved changes by day</h3></div><span class="chart-unit">MON–SUN</span></div>
           <div id="day-chart" class="chart"></div>
         </section>
       </div>
 
+      <section class="panel hotspot-panel" aria-labelledby="hotspot-title">
+        <div class="table-heading">
+          <div>
+            <p class="eyebrow">WHERE CHANGES GATHER</p>
+            <h3 id="hotspot-title">Files changed most often</h3>
+          </div>
+          <span class="table-note">TOP 8 FILES</span>
+        </div>
+        <div id="hotspot-list" class="hotspot-list"></div>
+      </section>
+
       <section class="panel commit-panel">
-        <div class="table-heading"><div><p class="eyebrow">LATEST ACTIVITY</p><h3>Commit history</h3></div><span class="table-note">Message patterns are estimates</span></div>
+        <div class="table-heading"><div><p class="eyebrow">LATEST ACTIVITY</p><h3>Saved changes</h3></div><span class="table-note">Possible fixes are guesses</span></div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Date and time</th><th>Message</th><th>Lines + / -</th></tr></thead>
+            <thead><tr><th>Date and time</th><th>Message</th><th>Lines added / removed</th></tr></thead>
             <tbody id="commit-list"></tbody>
           </table>
         </div>
       </section>
-      <p class="disclaimer">A “possible fix” is estimated from commit-message keywords. Peak activity uses commit volume as a proxy; these patterns do not prove that a time caused bugs or measure burnout.</p>
+      <p class="disclaimer">Git-Mood guesses that a saved change may be a fix from its message. A file changed again within a day may be normal work. These numbers show patterns; they cannot prove that a time caused a bug or measure burnout.</p>
     </section>
   </main>
 </body>

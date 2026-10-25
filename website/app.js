@@ -6,7 +6,7 @@ const API_URL = "/api/analyze";
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  statusMessage.textContent = "Reading Git history...";
+  statusMessage.textContent = "Looking at your saved changes...";
   statusMessage.classList.remove("error");
   analyzeButton.disabled = true;
 
@@ -23,7 +23,7 @@ form.addEventListener("submit", async (event) => {
     const contentType = response.headers.get("content-type") || "";
     if (!contentType.includes("application/json")) {
       throw new Error(
-        "Git-Mood did not return results. Make sure 'python web_app.py' is running in the Git-Mood folder."
+        "Git-Mood could not load your report. Start it by running 'python web_app.py' in the Git-Mood folder."
       );
     }
 
@@ -37,7 +37,7 @@ form.addEventListener("submit", async (event) => {
     statusMessage.textContent = "Analysis complete.";
   } catch (error) {
     statusMessage.textContent = error instanceof TypeError
-      ? "Could not reach Git-Mood. Run 'python web_app.py' in PowerShell, then open http://127.0.0.1:8000 in Chrome or Edge."
+      ? "Git-Mood could not connect. In PowerShell, run 'python web_app.py' in the Git-Mood folder, then open http://127.0.0.1:8000."
       : error.message;
     statusMessage.classList.add("error");
     results.classList.add("hidden");
@@ -51,6 +51,8 @@ function showReport(report, author) {
   showBugFixRatio(report.totals);
   showPeakHour(report.hours);
   showAfterMidnightPattern(report.hours, report.totals.fixes);
+  showRapidRework(report.totals);
+  showHotspots(report.hotspots);
   document.querySelector("#author-label").textContent = author ? `Author: ${author}` : "All authors";
 
   drawChart("#hour-chart", report.hours);
@@ -59,11 +61,66 @@ function showReport(report, author) {
   results.classList.remove("hidden");
 }
 
+function showRapidRework(totals) {
+  const rate = totals.file_changing_commits
+    ? Math.round((totals.rapid_followups / totals.file_changing_commits) * 100)
+    : null;
+
+  document.querySelector("#rework-rate").textContent = rate === null ? "No data" : `${rate}%`;
+  document.querySelector("#rework-count").textContent = rate === null
+    ? "No changed files were found"
+    : `${totals.rapid_followups} of ${totals.file_changing_commits} saves changed a file again within a day`;
+}
+
+function showHotspots(files) {
+  const list = document.querySelector("#hotspot-list");
+  list.replaceChildren();
+
+  if (!files.length) {
+    const message = document.createElement("p");
+    message.className = "hotspot-empty";
+    message.textContent = "No changed files were found in this commit history.";
+    list.append(message);
+    return;
+  }
+
+  const mostChanges = Math.max(...files.map((file) => file.commits), 1);
+
+  for (const file of files) {
+    const row = document.createElement("div");
+    row.className = "hotspot-row";
+
+    const top = document.createElement("div");
+    top.className = "hotspot-top";
+    const name = document.createElement("span");
+    name.className = "hotspot-name";
+    name.textContent = file.file;
+    const count = document.createElement("span");
+    count.className = "hotspot-count";
+    count.textContent = `${file.commits} commits`;
+    top.append(name, count);
+
+    const bar = document.createElement("div");
+    bar.className = "hotspot-bar";
+    const fill = document.createElement("span");
+    fill.style.width = `${(file.commits / mostChanges) * 100}%`;
+    bar.append(fill);
+
+    const detail = document.createElement("span");
+    detail.className = "hotspot-detail";
+    const timesText = file.revisits === 1 ? "1 time" : `${file.revisits} times`;
+    detail.textContent = `File changed again ${timesText} within a day`;
+
+    row.append(top, bar, detail);
+    list.append(row);
+  }
+}
+
 function showBugFixRatio(totals) {
   const ratio = Math.round((totals.fixes / totals.commits) * 100);
   document.querySelector("#bug-ratio").textContent = `${ratio}%`;
   document.querySelector("#bug-ratio-detail").textContent =
-    `${totals.fixes} possible fixes out of ${totals.commits} commits`;
+    `${totals.fixes} possible fixes out of ${totals.commits} saved changes`;
 }
 
 function showPeakHour(hours) {
@@ -91,17 +148,17 @@ function showAfterMidnightPattern(hours, allFixes) {
 
   if (allFixes === 0) {
     shareValue.textContent = "No data";
-    shareDetail.textContent = "No commits matched the possible-fix keywords";
+    shareDetail.textContent = "No saved changes looked like possible fixes";
     insight.textContent =
-      "No possible fixes were flagged in this history. Git-Mood guesses from commit-message keywords, so its results depend on how commits are described.";
+      "Git-Mood did not find messages that looked like fixes. It only guesses from words in the messages.";
     return;
   }
 
   const share = Math.round((afterMidnightFixes / allFixes) * 100);
   shareValue.textContent = `${share}%`;
-  shareDetail.textContent = `${afterMidnightFixes} of ${allFixes} possible fixes, 12–4:59 AM`;
+  shareDetail.textContent = `${afterMidnightFixes} of ${allFixes} possible fixes, midnight to 5 AM`;
   insight.textContent =
-    `${share}% of commits flagged as possible fixes were made after midnight (${afterMidnightFixes} of ${allFixes}). This is a pattern in the history, not proof that the time caused bugs. It may help you choose when to schedule focused coding.`;
+    `${afterMidnightFixes} of ${allFixes} possible fixes happened between midnight and 5 AM. This is a pattern, not proof that late hours caused bugs.`;
 }
 
 function drawChart(target, rows) {
@@ -126,7 +183,7 @@ function drawChart(target, rows) {
 
     const detail = document.createElement("span");
     detail.className = "chart-detail";
-    detail.textContent = `${row.commits} commits · ${row.fix_percent}% possible fixes`;
+    detail.textContent = `${row.commits} saved changes · ${row.fix_percent}% possible fixes`;
 
     chartRow.append(label, track, detail);
     chart.append(chartRow);
@@ -150,7 +207,14 @@ function showCommits(commits) {
     if (commit.possible_fix) {
       const tag = document.createElement("span");
       tag.className = "fix-tag";
-      tag.textContent = "possible fix";
+      tag.textContent = "maybe a fix";
+      messageCell.append(tag);
+    }
+
+    if (commit.rapid_followup) {
+      const tag = document.createElement("span");
+      tag.className = "rework-tag";
+      tag.textContent = "changed again";
       messageCell.append(tag);
     }
 

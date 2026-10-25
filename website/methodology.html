@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How Git-Mood Works</title>
+  <meta name="theme-color" content="#4b43d1">
+  <meta name="description" content="Learn how Git-Mood reads commit history and how to understand its signals.">
+  <link rel="icon" type="image/svg+xml" href="logo.svg?v=2">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a class="brand" href="/#overview" aria-label="Git-Mood home">
+        <img class="brand-logo" src="logo.svg?v=2" alt="">
+        <span>git-mood</span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-link" href="/#overview">Dashboard</a>
+        <a class="nav-link" href="/#analyze-title">Analyze</a>
+        <a class="nav-link active" href="methodology.html" aria-current="page">How it works</a>
+      </nav>
+      <span class="local-badge"><span class="local-dot"></span> RUNS ON YOUR COMPUTER</span>
+    </div>
+
+    <header class="method-hero">
+      <p class="eyebrow">A GUIDE TO YOUR REPORT</p>
+      <h1>How Git-Mood<br><span>works.</span></h1>
+      <p class="intro">In Git, a commit is a saved set of changes. Git-Mood looks at these saves and turns them into a few simple numbers. Here is how it counts them.</p>
+    </header>
+
+    <section class="method-grid" aria-label="How Git-Mood measures activity">
+      <article class="method-card">
+        <p class="eyebrow">01 / MAYBE A FIX</p>
+        <h2>Read the message</h2>
+        <p>Git-Mood marks a save as a possible fix if its message has words like “fix,” “bug,” “oops,” or “error.” This is only a guess. It does not check the code for bugs.</p>
+      </article>
+      <article class="method-card">
+        <p class="eyebrow">02 / CHANGED AGAIN SOON</p>
+        <h2>Look for the same file</h2>
+        <p>Git-Mood checks if a later save changed the same file within 24 hours. This can be normal work. It does not always mean something was wrong.</p>
+      </article>
+      <article class="method-card">
+        <p class="eyebrow">03 / FILES CHANGED OFTEN</p>
+        <h2>Find files changed most often</h2>
+        <p>The dashboard lists up to eight files that appear in the most saved changes. A file may change often because you are working on it a lot. This count does not tell us if the file is good or bad.</p>
+      </article>
+      <article class="method-card">
+        <p class="eyebrow">04 / WHEN CHANGES HAPPEN</p>
+        <h2>Group saved changes by time</h2>
+        <p>Git-Mood uses the date and time saved with each commit. Your most active hour is the hour with the most changes. It may not be your most productive hour.</p>
+      </article>
+    </section>
+
+    <aside class="method-note">
+      <h2>Use these numbers as clues</h2>
+      <p>Git history cannot tell how long you worked, how hard a task was, or how you felt. Look for patterns, then think about what was happening when you made those changes. Git-Mood reads your history on your computer; it does not upload your project files.</p>
+    </aside>
+
+    <a class="method-cta" href="/#analyze-title">Go analyze a project <span aria-hidden="true">↗</span></a>
+  </main>
+</body>
+</html>

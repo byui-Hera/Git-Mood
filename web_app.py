@@ -15,6 +15,7 @@ WEBSITE_FOLDER = Path(__file__).resolve().parent / "website"
 DAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 # These words are guesses that a commit may be about a fix.
 FIX_WORDS = ("fix", "bug", "oops", "error")
+FOLLOW_UP_HOURS = 24
 
 
 def make_rows(summary, names):
@@ -40,12 +41,55 @@ def make_rows(summary, names):
     return rows
 
 
+def mark_rapid_followups(commits):
+    """Mark commits whose files were changed again within a day."""
+    # Check commits from newest to oldest, so we can find a later edit.
+    newest_first = sorted(
+        commits,
+        key=lambda commit: datetime.fromisoformat(commit["date"]),
+        reverse=True,
+    )
+    latest_file_time = {}
+    followups = 0
+    file_changing_commits = 0
+
+    for commit in newest_first:
+        commit_time = datetime.fromisoformat(commit["date"])
+        files = commit.get("files", [])
+        revisited_files = [
+            file_name
+            for file_name in files
+            if file_name in latest_file_time
+            and 0 <= (latest_file_time[file_name] - commit_time).total_seconds()
+            <= FOLLOW_UP_HOURS * 60 * 60
+        ]
+
+        commit["rapid_followup_files"] = revisited_files
+        commit["rapid_followup"] = bool(revisited_files)
+        if files:
+            file_changing_commits += 1
+            if revisited_files:
+                followups += 1
+
+            # Keep the closest later commit that touched each file.
+            for file_name in files:
+                latest_file_time.setdefault(file_name, commit_time)
+
+    return followups, file_changing_commits
+
+
 def make_report(repo_folder, author_name):
     """Read a project and prepare the website results."""
     # Read the commit history with the same function used by the terminal tool.
     commits = get_commits(repo_folder, author_name)
     if not commits:
-        raise ValueError("No matching commits found. Check the folder and author name.")
+        raise ValueError(
+            "No saved changes found. Check that this is a Git project folder, "
+            "or leave the author blank to include everyone."
+        )
+
+    # Count commits followed by another edit to the same file within a day.
+    rapid_followups, file_changing_commits = mark_rapid_followups(commits)
 
     # These dictionaries store counts for each hour and weekday.
     hour_counts = {}
@@ -54,6 +98,7 @@ def make_report(repo_folder, author_name):
     total_short = 0
     total_added = 0
     total_removed = 0
+    file_activity = {}
 
     # Count the commits by hour and weekday.
     for commit in commits:
@@ -90,6 +135,28 @@ def make_report(repo_folder, author_name):
         total_added += commit["added"]
         total_removed += commit["removed"]
 
+        # Count how often each file was changed and quickly revisited.
+        revisited_files = commit.get("rapid_followup_files", [])
+        for file_name in commit.get("files", []):
+            if file_name not in file_activity:
+                file_activity[file_name] = {"commits": 0, "revisits": 0}
+
+            file_activity[file_name]["commits"] += 1
+            if file_name in revisited_files:
+                file_activity[file_name]["revisits"] += 1
+
+        # File names are only needed to calculate follow-up edits.
+        commit.pop("files", None)
+        commit.pop("rapid_followup_files", None)
+
+    hotspots = [
+        {"file": file_name, **counts}
+        for file_name, counts in sorted(
+            file_activity.items(),
+            key=lambda item: (-item[1]["commits"], item[0].lower()),
+        )[:8]
+    ]
+
     hour_names = {hour: f"{hour:02}:00" for hour in hour_counts}
     day_names = {day: DAY_NAMES[day] for day in day_counts}
 
@@ -98,12 +165,15 @@ def make_report(repo_folder, author_name):
         "commits": commits,
         "hours": make_rows(hour_counts, hour_names),
         "days": make_rows(day_counts, day_names),
+        "hotspots": hotspots,
         "totals": {
             "commits": len(commits),
             "fixes": total_fixes,
             "short": total_short,
             "added": total_added,
             "removed": total_removed,
+            "rapid_followups": rapid_followups,
+            "file_changing_commits": file_changing_commits,
         },
     }
 

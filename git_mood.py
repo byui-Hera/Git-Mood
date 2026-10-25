@@ -46,10 +46,12 @@ def get_commits(repo_folder, author_name):
                 "message": message,
                 "added": 0,
                 "removed": 0,
+                "files": [],
             }
         elif current_commit is not None and "\t" in line:
             # Git gives us added lines, removed lines, and a file name.
-            added, removed, _ = line.split("\t", 2)
+            added, removed, file_name = line.split("\t", 2)
+            current_commit["files"].append(file_name)
 
             # A dash means Git could not count lines in that file.
             if added.isdigit() and removed.isdigit():
