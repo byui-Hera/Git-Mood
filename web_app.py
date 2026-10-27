@@ -84,8 +84,7 @@ def make_report(repo_folder, author_name):
     commits = get_commits(repo_folder, author_name)
     if not commits:
         raise ValueError(
-            "No saved changes found. Check that this is a Git project folder, "
-            "or leave the author blank to include everyone."
+            "No commits found. Check the project folder or leave the author field blank."
         )
 
     # Count commits followed by another edit to the same file within a day.
@@ -198,7 +197,7 @@ class GitMoodHandler(SimpleHTTPRequestHandler):
         author_name = values.get("author", [""])[0].strip()
 
         if not repo_folder:
-            self.send_json(400, {"error": "Enter the folder path of a Git project."})
+            self.send_json(400, {"error": "Enter a project folder path."})
             return
 
         try:

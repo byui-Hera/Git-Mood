@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Git-Mood — Commit Insights</title>
+  <title>Git-Mood — Your Git Patterns</title>
   <meta name="theme-color" content="#4b43d1">
-  <meta name="description" content="Explore commit timing and possible fix patterns in your local Git history with Git-Mood.">
+  <meta name="description" content="See patterns in your Git commits and work sessions with Git-Mood.">
   <link rel="icon" type="image/svg+xml" href="logo.svg?v=2">
   <link rel="stylesheet" href="style.css">
   <script src="app.js" defer></script>
@@ -13,23 +13,23 @@
 <body>
   <main class="page">
     <div class="topbar">
-      <a class="brand" href="/#overview" aria-label="Git-Mood home">
+      <a class="brand" href="./index.html#overview" aria-label="Git-Mood home">
         <img class="brand-logo" src="logo.svg?v=2" alt="">
         <span>git-mood</span>
       </a>
       <nav class="main-nav" aria-label="Main navigation">
-        <a class="nav-link active" href="/#overview" aria-current="page">Dashboard</a>
-        <a class="nav-link" href="/#analyze-title">Analyze</a>
-        <a class="nav-link" href="methodology.html">How it works</a>
+        <a class="nav-link active" href="./index.html#overview" aria-current="page">Dashboard</a>
+        <a class="nav-link" href="./index.html#analyze">Analyze</a>
+        <a class="nav-link" href="./message-coach.html">Message coach</a>
       </nav>
-      <span class="local-badge"><span class="local-dot"></span> RUNS ON YOUR COMPUTER</span>
+      <span class="local-badge"><span class="local-dot"></span> PRIVATE ON THIS COMPUTER</span>
     </div>
 
     <header class="hero" id="overview">
       <div class="hero-copy">
-      <p class="eyebrow">GIT HISTORY · RUNS ON YOUR COMPUTER</p>
-      <h1>See when and where<br><span>changes happen.</span></h1>
-      <p class="intro">Git-Mood looks at your project's saved changes. It shows when changes happen, which files change often, and which files change again soon.</p>
+      <p class="eyebrow">A CLEAR VIEW OF YOUR GIT HISTORY</p>
+      <h1>Understand your<br><span>coding patterns.</span></h1>
+      <p class="intro">A commit is a saved code change. See when you make commits, which files change most, and how your work notes compare.</p>
       </div>
       <div class="hero-visual" aria-hidden="true">
         <svg viewBox="0 0 440 260" role="presentation">
@@ -47,8 +47,8 @@
           <rect width="440" height="260" rx="20" fill="#202536"/>
           <path d="M28 72H412M28 118H412M28 164H412M28 210H412" stroke="#FFFFFF" stroke-opacity=".08"/>
           <path d="M76 52V220M160 52V220M244 52V220M328 52V220" stroke="#FFFFFF" stroke-opacity=".06"/>
-          <text x="30" y="36" fill="#C5C9D7" font-size="10" font-family="Arial, sans-serif" letter-spacing="2">COMMIT SIGNAL</text>
-          <text x="355" y="36" fill="#C5C9D7" font-size="10" font-family="Arial, sans-serif" letter-spacing="1">24 HOURS</text>
+          <text x="30" y="36" fill="#C5C9D7" font-size="10" font-family="Arial, sans-serif" letter-spacing="2">COMMITS BY HOUR</text>
+          <text x="355" y="36" fill="#C5C9D7" font-size="10" font-family="Arial, sans-serif" letter-spacing="1">ONE DAY</text>
           <path d="M30 187C62 185 68 145 98 151C127 157 130 102 160 110C189 118 190 175 219 168C251 160 251 91 282 97C314 103 310 139 342 130C369 123 374 72 410 68V220H30V187Z" fill="url(#signal-fill)"/>
           <path d="M30 187C62 185 68 145 98 151C127 157 130 102 160 110C189 118 190 175 219 168C251 160 251 91 282 97C314 103 310 139 342 130C369 123 374 72 410 68" stroke="url(#signal-line)" stroke-width="3" stroke-linecap="round"/>
           <circle cx="98" cy="151" r="5" fill="#202536" stroke="#A8ACFF" stroke-width="2.5"/>
@@ -58,90 +58,134 @@
           <text x="30" y="240" fill="#9DA3B4" font-size="9" font-family="Arial, sans-serif">00:00</text>
           <text x="374" y="240" fill="#9DA3B4" font-size="9" font-family="Arial, sans-serif">23:59</text>
         </svg>
-        <div class="visual-caption"><span class="visual-caption-dot"></span><span>YOUR HISTORY, MADE VISIBLE</span></div>
+        <div class="visual-caption"><span class="visual-caption-dot"></span><span>YOUR GIT HISTORY AT A GLANCE</span></div>
       </div>
     </header>
 
-    <section class="panel form-panel" aria-labelledby="analyze-title">
+    <section id="analyze" class="panel form-panel" aria-labelledby="analyze-title">
       <div class="form-copy">
-        <p class="eyebrow">01 / CHOOSE A PROJECT</p>
-        <h2 id="analyze-title">Make a report</h2>
-        <p class="help">Git-Mood reads your saved-change history on your computer. Your files are not uploaded.</p>
+        <p class="eyebrow">START HERE</p>
+        <h2 id="analyze-title">Analyze a project</h2>
+        <p class="help">Choose the folder with your Git project. Your files stay on this computer.</p>
       </div>
       <form id="analyze-form">
         <div class="field">
-          <label for="repo-path">Git project folder</label>
+          <label for="repo-path">Project folder</label>
           <input id="repo-path" name="repo" type="text" placeholder="C:\Projects\my-project" required>
         </div>
         <div class="field">
-          <label for="author-name">Name used in Git <span>OPTIONAL</span></label>
+          <label for="author-name">Git author name <span>OPTIONAL</span></label>
           <input id="author-name" name="author" type="text" placeholder="All authors">
         </div>
-        <button id="analyze-button" type="submit">Analyze history <span aria-hidden="true">↗</span></button>
+        <button id="analyze-button" type="submit">Analyze project <span aria-hidden="true">↗</span></button>
       </form>
-      <p id="status" class="status" role="status" aria-live="polite">Enter the folder path of a Git project. Leave the author blank to include everyone.</p>
+      <p id="status" class="status" role="status" aria-live="polite">Enter a project folder. Leave the author blank to include everyone.</p>
     </section>
 
     <section id="results" class="results hidden" aria-live="polite">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">02 / REPOSITORY REPORT</p>
-          <h2>Your project summary</h2>
+          <p class="eyebrow">YOUR REPORT</p>
+          <h2>Commit summary</h2>
         </div>
         <p id="author-label" class="author-label"></p>
       </div>
 
       <div class="cards" aria-label="Repository summary">
         <article class="metric-card">
-          <span class="metric-label">TOTAL SAVED CHANGES</span>
+          <span class="metric-label">TOTAL COMMITS</span>
           <strong id="total-commits">0</strong>
-          <small>In the selected history</small>
+          <small>In this project</small>
         </article>
         <article class="metric-card">
-          <span class="metric-label">POSSIBLE FIX RATE</span>
+          <span class="metric-label">MAY BE A FIX</span>
           <strong id="bug-ratio">0%</strong>
-          <small id="bug-ratio-detail">Possible fixes by message keywords</small>
+          <small id="bug-ratio-detail">Based on words in commit messages</small>
         </article>
         <article class="metric-card metric-featured">
-          <span class="metric-label">MOST ACTIVE HOUR</span>
+          <span class="metric-label">BUSIEST COMMIT HOUR</span>
           <strong id="peak-hour">—</strong>
-          <small>Hour with the most saved changes</small>
+          <small>When you made the most commits</small>
         </article>
         <article class="metric-card metric-risk">
-          <span class="metric-label">POSSIBLE FIXES AFTER MIDNIGHT</span>
+          <span class="metric-label">POSSIBLE FIXES AT NIGHT</span>
           <strong id="after-midnight-share">—</strong>
-          <small id="after-midnight-detail">Share of possible fixes from 12–4:59 AM</small>
+          <small id="after-midnight-detail">From midnight to 5 AM</small>
         </article>
       </div>
 
+      <section class="panel session-panel" aria-labelledby="session-title">
+        <div class="table-heading">
+          <div>
+            <p class="eyebrow">YOUR WORK NOTES</p>
+            <h3 id="session-title">Log a work session</h3>
+          </div>
+          <span class="table-note">SAVED IN YOUR BROWSER</span>
+        </div>
+        <p class="session-intro">Add how long you worked, how hard the task felt, and your mood. Git-Mood compares your notes with commits made during that time.</p>
+        <form id="session-form" class="session-form">
+          <div class="field">
+            <label for="session-start">Start time</label>
+            <input id="session-start" name="start" type="datetime-local" required>
+          </div>
+          <div class="field">
+            <label for="session-duration">Time spent (minutes)</label>
+            <input id="session-duration" name="duration" type="number" min="5" max="720" step="5" placeholder="60" required>
+          </div>
+          <div class="field">
+            <label for="session-difficulty">Task difficulty</label>
+            <select id="session-difficulty" name="difficulty" required>
+              <option value="1">Very easy</option>
+              <option value="2">Easy</option>
+              <option value="3" selected>Medium</option>
+              <option value="4">Hard</option>
+              <option value="5">Very hard</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="session-mood">Your mood</label>
+            <select id="session-mood" name="mood" required>
+              <option value="energized">Energized</option>
+              <option value="okay" selected>Okay</option>
+              <option value="tired">Tired</option>
+              <option value="stressed">Stressed</option>
+            </select>
+          </div>
+          <button type="submit">Save work note</button>
+        </form>
+        <p id="session-status" class="status" role="status" aria-live="polite"></p>
+        <div id="session-summary" class="session-summary" aria-live="polite"></div>
+        <div id="session-list" class="session-list"></div>
+      </section>
+
       <section class="rework-panel" aria-labelledby="rework-title">
         <div class="rework-stat">
-        <p class="eyebrow">FILES CHANGED AGAIN SOON</p>
+        <p class="eyebrow">SAME FILE CHANGED AGAIN</p>
           <strong id="rework-rate">—</strong>
           <span id="rework-count">Checking changed files</span>
         </div>
         <div class="rework-copy">
-          <h3 id="rework-title">The same file changed within a day</h3>
-          <p>This can be part of normal work. It does not prove the first change had a bug.</p>
+          <h3 id="rework-title">A file changed again within 24 hours</h3>
+          <p>This can be normal work. It does not always mean there was a bug.</p>
         </div>
       </section>
 
       <section class="insight-panel" aria-labelledby="insight-title">
         <div class="insight-symbol" aria-hidden="true">↗</div>
         <div>
-          <p class="eyebrow" id="insight-title">A PATTERN IN YOUR HISTORY</p>
-          <p class="insight-copy" id="personal-insight">Make a report to see patterns in your saved changes.</p>
+          <p class="eyebrow" id="insight-title">ONE PATTERN</p>
+          <p class="insight-copy" id="personal-insight">Analyze a project to see your patterns.</p>
         </div>
       </section>
 
-      <div class="section-kicker"><span>YOUR ACTIVITY</span><span>SAVED CHANGES AND POSSIBLE FIXES</span></div>
+      <div class="section-kicker"><span>YOUR COMMITS</span><span>WHEN YOU MADE THEM</span></div>
       <div class="chart-grid">
         <section class="panel chart-panel">
-          <div class="chart-heading"><div><p class="eyebrow">TIME OF DAY</p><h3>Saved changes by hour</h3></div><span class="chart-unit">GIT TIME</span></div>
+          <div class="chart-heading"><div><p class="eyebrow">TIME OF DAY</p><h3>Commits by hour</h3></div><span class="chart-unit">YOUR LOCAL TIME</span></div>
           <div id="hour-chart" class="chart"></div>
         </section>
         <section class="panel chart-panel">
-          <div class="chart-heading"><div><p class="eyebrow">EACH WEEK</p><h3>Saved changes by day</h3></div><span class="chart-unit">MON–SUN</span></div>
+          <div class="chart-heading"><div><p class="eyebrow">DAYS OF THE WEEK</p><h3>Commits by day</h3></div><span class="chart-unit">MON–SUN</span></div>
           <div id="day-chart" class="chart"></div>
         </section>
       </div>
@@ -149,24 +193,24 @@
       <section class="panel hotspot-panel" aria-labelledby="hotspot-title">
         <div class="table-heading">
           <div>
-            <p class="eyebrow">WHERE CHANGES GATHER</p>
-            <h3 id="hotspot-title">Files changed most often</h3>
+            <p class="eyebrow">FILES YOU WORK ON MOST</p>
+            <h3 id="hotspot-title">Most changed files</h3>
           </div>
-          <span class="table-note">TOP 8 FILES</span>
+          <span class="table-note">UP TO 8 FILES</span>
         </div>
         <div id="hotspot-list" class="hotspot-list"></div>
       </section>
 
       <section class="panel commit-panel">
-        <div class="table-heading"><div><p class="eyebrow">LATEST ACTIVITY</p><h3>Saved changes</h3></div><span class="table-note">Possible fixes are guesses</span></div>
+        <div class="table-heading"><div><p class="eyebrow">YOUR HISTORY</p><h3>Recent commits</h3></div><span class="table-note">Fix labels are guesses</span></div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Date and time</th><th>Message</th><th>Lines added / removed</th></tr></thead>
+            <thead><tr><th>Date and time</th><th>Commit message</th><th>Lines added / removed</th></tr></thead>
             <tbody id="commit-list"></tbody>
           </table>
         </div>
       </section>
-      <p class="disclaimer">Git-Mood guesses that a saved change may be a fix from its message. A file changed again within a day may be normal work. These numbers show patterns; they cannot prove that a time caused a bug or measure burnout.</p>
+      <p class="disclaimer">Git-Mood guesses possible fixes from commit messages. Commit times may not match your work hours. Your work notes are saved in this browser. These patterns do not prove that mood or work time caused a bug.</p>
     </section>
   </main>
 </body>

@@ -1,7 +1,6 @@
 # Git-Mood
 
-Git-Mood is a small website that shows patterns in a Git project's commit history.
-Use the **How it works** link in the website to learn how each number is counted.
+Git-Mood is a small website that shows patterns in a Git project's commit history and helps you write clearer commit messages.
 
 ## Start the website
 
@@ -28,10 +27,16 @@ To analyze one author's commits, enter their Git author name in the optional aut
 - Files changed again within 24 hours.
 - The eight files changed most often.
 - Lines added and removed.
+- Work sessions you record: time spent, task difficulty, and how you felt.
+- A commit message coach that checks for length, vague wording, and an action word.
+
+The message coach checks your draft in the browser. It does not save or send the draft.
+
+Session notes are saved in your browser for the selected project. Git-Mood counts commits whose timestamps fall inside a session. Work without a commit may not appear, and a commit time may not match when you worked.
 
 ## Important
 
-Git-Mood runs on your computer. Your repository history stays local. A “possible fix” is guessed from commit-message words. A file changed again within 24 hours may just be normal work. These results show patterns; they do not prove that a time of day caused bugs or measure burnout.
+Git-Mood runs on your computer. Your repository history stays local, and session notes stay in your browser. A “possible fix” is guessed from commit-message words. A file changed again within 24 hours may just be normal work. These results show patterns; they do not prove that mood or work time caused bugs.
 
 ## Run the tests
 

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Commit Message Coach — Git-Mood</title>
+  <meta name="theme-color" content="#4b43d1">
+  <meta name="description" content="Make Git commit messages easier to understand with the Git-Mood Commit Message Coach.">
+  <link rel="icon" type="image/svg+xml" href="logo.svg?v=2">
+  <link rel="stylesheet" href="style.css">
+  <script src="message-coach.js" defer></script>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a class="brand" href="./index.html#overview" aria-label="Git-Mood home">
+        <img class="brand-logo" src="logo.svg?v=2" alt="">
+        <span>git-mood</span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a class="nav-link" href="./index.html#overview">Dashboard</a>
+        <a class="nav-link" href="./index.html#analyze">Analyze</a>
+        <a class="nav-link active" href="./message-coach.html" aria-current="page">Message coach</a>
+      </nav>
+      <span class="local-badge"><span class="local-dot"></span> PRIVATE ON THIS COMPUTER</span>
+    </div>
+
+    <header class="method-hero">
+      <p class="eyebrow">A HELPER FOR YOUR NEXT COMMIT</p>
+      <h1>Write a clearer<br><span>commit message.</span></h1>
+      <p class="intro">Type a draft below. Git-Mood checks its length and gives you a few tips.</p>
+    </header>
+
+    <section class="panel coach-panel" aria-labelledby="coach-title">
+      <div class="coach-heading">
+        <div>
+          <p class="eyebrow">MESSAGE HELPER</p>
+          <h2 id="coach-title">Check your message</h2>
+        </div>
+        <span id="message-count" class="table-note">0 / 72 characters</span>
+      </div>
+      <form id="coach-form" class="coach-form">
+        <label for="commit-message">Your commit message</label>
+        <input id="commit-message" name="message" type="text" maxlength="120" placeholder="Example: Fix login form validation" autocomplete="off" required>
+        <p class="coach-help">Say what you changed. Add why if it helps.</p>
+        <button type="submit">Check message <span aria-hidden="true">↗</span></button>
+      </form>
+      <section id="coach-results" class="coach-results hidden" aria-live="polite" aria-labelledby="coach-results-title">
+        <h3 id="coach-results-title">Suggestions</h3>
+        <ul id="coach-checklist" class="coach-checklist"></ul>
+      </section>
+    </section>
+
+    <section class="coach-examples" aria-label="Commit message examples">
+      <div class="table-heading">
+        <div><p class="eyebrow">A SIMPLE PATTERN</p><h2>Start with an action. Say what changed.</h2></div>
+      </div>
+      <div class="method-grid">
+        <article class="method-card">
+          <p class="eyebrow">TOO VAGUE</p>
+          <h3>“save the changes”</h3>
+          <p>This does not say what changed. You may not remember what it means later.</p>
+        </article>
+        <article class="method-card">
+          <p class="eyebrow">CLEARER</p>
+          <h3>“Add a password reset form”</h3>
+          <p>It starts with an action and names the change.</p>
+        </article>
+      </div>
+    </section>
+
+    <aside class="method-note">
+      <h2>Your draft stays private</h2>
+      <p>Git-Mood checks your message in this browser. It does not save or send it. This tool checks the words, not your code.</p>
+    </aside>
+
+    <a class="method-cta" href="./index.html#analyze">Back to your project <span aria-hidden="true">↗</span></a>
+  </main>
+</body>
+</html>

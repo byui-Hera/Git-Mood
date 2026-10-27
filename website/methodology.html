@@ -3,23 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>How Git-Mood Works</title>
+  <title>Commit Message Coach — Git-Mood</title>
+  <meta http-equiv="refresh" content="0; url=./message-coach.html">
   <meta name="theme-color" content="#4b43d1">
-  <meta name="description" content="Learn how Git-Mood reads commit history and how to understand its signals.">
+  <meta name="description" content="Open the Git-Mood Commit Message Coach.">
   <link rel="icon" type="image/svg+xml" href="logo.svg?v=2">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="page">
     <div class="topbar">
-      <a class="brand" href="/#overview" aria-label="Git-Mood home">
+      <a class="brand" href="./index.html#overview" aria-label="Git-Mood home">
         <img class="brand-logo" src="logo.svg?v=2" alt="">
         <span>git-mood</span>
       </a>
       <nav class="main-nav" aria-label="Main navigation">
-        <a class="nav-link" href="/#overview">Dashboard</a>
-        <a class="nav-link" href="/#analyze-title">Analyze</a>
-        <a class="nav-link active" href="methodology.html" aria-current="page">How it works</a>
+        <a class="nav-link" href="./index.html#overview">Dashboard</a>
+        <a class="nav-link" href="./index.html#analyze">Analyze</a>
+        <a class="nav-link" href="./message-coach.html">Message coach</a>
       </nav>
       <span class="local-badge"><span class="local-dot"></span> RUNS ON YOUR COMPUTER</span>
     </div>
@@ -51,14 +52,19 @@
         <h2>Group saved changes by time</h2>
         <p>Git-Mood uses the date and time saved with each commit. Your most active hour is the hour with the most changes. It may not be your most productive hour.</p>
       </article>
+      <article class="method-card">
+        <p class="eyebrow">05 / YOUR WORK SESSIONS</p>
+        <h2>Add your own notes</h2>
+        <p>Record how long you worked, how hard the task felt, and your mood. Git-Mood compares your notes with commits timestamped during that time. The notes stay in this browser.</p>
+      </article>
     </section>
 
     <aside class="method-note">
       <h2>Use these numbers as clues</h2>
-      <p>Git history cannot tell how long you worked, how hard a task was, or how you felt. Look for patterns, then think about what was happening when you made those changes. Git-Mood reads your history on your computer; it does not upload your project files.</p>
+      <p>Git can tell when changes were saved, but not when you started working, how hard a task felt, or how you felt. Add those details in the session journal. Git-Mood counts commits whose Git timestamp falls inside the time you entered. Work without a commit may not appear, and commit times may not match your actual work time. Session notes stay in this browser. Nothing is uploaded.</p>
     </aside>
 
-    <a class="method-cta" href="/#analyze-title">Go analyze a project <span aria-hidden="true">↗</span></a>
+    <a class="method-cta" href="./index.html#analyze">Go analyze a project <span aria-hidden="true">↗</span></a>
   </main>
 </body>
 </html>
