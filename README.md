@@ -14,7 +14,7 @@ You need Python 3 and Git installed.
    ```
 
 3. Open this address in your browser: <http://127.0.0.1:8000>
-4. Enter the folder path of a Git project and select **Analyze history**.
+4. Enter the folder path of a Git project and select **Analyze project**.
 5. Press **Ctrl+C** in PowerShell when you want to stop the website.
 
 To analyze one author's commits, enter their Git author name in the optional author box. Leave it blank to include all authors.
@@ -23,6 +23,8 @@ To analyze one author's commits, enter their Git author name in the optional aut
 
 - Commit messages and dates.
 - Commit counts by hour and weekday.
+- A calendar showing commits from the last 13 weeks.
+- The number of different files changed during each active hour.
 - Possible fixes guessed from commit-message words.
 - Files changed again within 24 hours.
 - The eight files changed most often.
@@ -31,6 +33,8 @@ To analyze one author's commits, enter their Git author name in the optional aut
 - A commit message coach that checks for length, vague wording, and an action word.
 
 The message coach checks your draft in the browser. It does not save or send the draft.
+
+The file activity report compares hours with four or more different files to other hours. It also compares commit messages that contain possible-fix words. This may hint at task switching, but Git cannot tell if the files were part of different tasks or how you felt.
 
 Session notes are saved in your browser for the selected project. Git-Mood counts commits whose timestamps fall inside a session. Work without a commit may not appear, and a commit time may not match when you worked.
 

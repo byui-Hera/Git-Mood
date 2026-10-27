@@ -87,12 +87,14 @@ function showReport(report, author, repo) {
   showBugFixRatio(report.totals);
   showPeakHour(report.hours);
   showAfterMidnightPattern(report.hours, report.totals.fixes);
+  showFileSpread(report.file_spread);
   showRapidRework(report.totals);
   showHotspots(report.hotspots);
   document.querySelector("#author-label").textContent = author ? `Git author: ${author}` : "All authors";
 
   drawChart("#hour-chart", report.hours);
   drawChart("#day-chart", report.days);
+  drawCalendar(report.commits);
   showCommits(report.commits);
   currentRepoKey = makeRepoKey(repo);
   currentCommits = report.commits;
@@ -354,6 +356,30 @@ function showAfterMidnightPattern(hours, allFixes) {
     `${afterMidnightFixes} of ${allFixes} possible fixes were in commits from midnight to 5 AM. This shows a pattern; it does not prove late hours caused bugs.`;
 }
 
+function showFileSpread(report) {
+  document.querySelector("#files-per-hour").textContent = report.average_files_per_hour;
+
+  const note = document.querySelector("#file-spread-note");
+  note.textContent = `Across ${report.active_hours} hours with commits. High spread means ${report.high_spread_threshold} or more files in one hour.`;
+  const comparison = document.querySelector("#file-spread-comparison");
+  comparison.classList.add("hidden");
+
+  if (!report.comparison_available) {
+    note.textContent += " Not enough data yet to compare fix messages between the two groups.";
+    return;
+  }
+
+  comparison.classList.remove("hidden");
+  showSpreadRate("#high-spread-rate", "#high-spread-detail", report.high_spread);
+  showSpreadRate("#low-spread-rate", "#low-spread-detail", report.lower_spread);
+}
+
+function showSpreadRate(rateTarget, detailTarget, group) {
+  document.querySelector(rateTarget).textContent = `${group.fix_percent}%`;
+  document.querySelector(detailTarget).textContent =
+    `${group.fixes} of ${group.commits} commits across ${group.hours} hours`;
+}
+
 function drawChart(target, rows) {
   const chart = document.querySelector(target);
   chart.replaceChildren();
@@ -380,6 +406,62 @@ function drawChart(target, rows) {
 
     chartRow.append(label, track, detail);
     chart.append(chartRow);
+  }
+}
+
+function drawCalendar(commits) {
+  const calendar = document.querySelector("#commit-calendar");
+  calendar.replaceChildren();
+
+  const commitsByDate = new Map();
+  for (const commit of commits) {
+    const date = commit.time.slice(0, 10);
+    commitsByDate.set(date, (commitsByDate.get(date) || 0) + 1);
+  }
+
+  const dates = [...commitsByDate.keys()].sort();
+  const latestDay = dates[dates.length - 1];
+  if (!latestDay) return;
+
+  const [year, month, day] = latestDay.split("-").map(Number);
+  const endDate = new Date(year, month - 1, day, 12);
+  endDate.setDate(endDate.getDate() + ((6 - endDate.getDay() + 7) % 7));
+  const firstDate = new Date(endDate);
+  firstDate.setDate(firstDate.getDate() - 90);
+
+  const datesInPeriod = dates.filter((date) => {
+    const dateValue = new Date(`${date}T12:00:00`);
+    return dateValue >= firstDate && dateValue <= endDate;
+  });
+  const activeDays = datesInPeriod.length;
+  const mostCommits = Math.max(
+    0,
+    ...datesInPeriod.map((date) => commitsByDate.get(date))
+  );
+
+  document.querySelector("#active-days").textContent = activeDays;
+  document.querySelector("#busiest-day").textContent = mostCommits;
+  document.querySelector("#calendar-range").textContent = `13 weeks ending ${endDate.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  })}`;
+
+  const dateCursor = new Date(firstDate);
+  for (let dayNumber = 0; dayNumber < 91; dayNumber += 1) {
+    const dateText = [
+      dateCursor.getFullYear(),
+      String(dateCursor.getMonth() + 1).padStart(2, "0"),
+      String(dateCursor.getDate()).padStart(2, "0"),
+    ].join("-");
+    const count = commitsByDate.get(dateText) || 0;
+    const level = count === 0 ? 0 : count < 2 ? 1 : count < 4 ? 2 : count < 7 ? 3 : 4;
+    const cell = document.createElement("span");
+    cell.className = `calendar-day level-${level}`;
+    cell.title = `${dateText}: ${count} ${count === 1 ? "commit" : "commits"}`;
+    cell.setAttribute("aria-label", cell.title);
+    calendar.append(cell);
+    dateCursor.setDate(dateCursor.getDate() + 1);
   }
 }
 

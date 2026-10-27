@@ -84,6 +84,22 @@ button span { margin-left: 13px; font-size: 1rem; }
 .metric-featured .metric-label { color: var(--accent-dark); }
 .metric-risk { border-color: #efe2da; background: linear-gradient(145deg, #fcf7f4, #fff 90%); }
 .metric-risk .metric-label { color: var(--risk); }
+.file-spread-panel { margin: 0 0 17px; padding: 27px 29px; }
+.file-spread-panel .table-heading { margin-bottom: 8px; }
+.file-spread-intro { max-width: 760px; margin: 0 0 18px; color: var(--muted); font-size: .8rem; line-height: 1.65; }
+.file-spread-summary { display: flex; align-items: center; gap: 24px; }
+.file-spread-number { display: grid; gap: 4px; min-width: 145px; }
+.file-spread-number strong { color: var(--accent-dark); font-size: 2rem; font-weight: 650; letter-spacing: -.06em; }
+.file-spread-number span { color: var(--muted); font-size: .7rem; }
+.file-spread-note { margin: 0; color: var(--muted); font-size: .76rem; line-height: 1.65; }
+.file-spread-comparison { margin-top: 20px; border-top: 1px solid var(--line); padding-top: 17px; }
+.file-spread-comparison > p { margin: 0 0 11px; color: var(--ink); font-size: .76rem; font-weight: 650; }
+.spread-rates { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.spread-rates > div { display: grid; gap: 5px; border: 1px solid var(--line); border-radius: 11px; padding: 13px 15px; background: #fcfbfa; }
+.spread-rates span { color: var(--muted); font-size: .68rem; }
+.spread-rates strong { color: var(--ink); font-size: 1.25rem; font-weight: 650; }
+.spread-rates small { color: var(--muted); font-size: .65rem; }
+.file-spread-caution { margin: 18px 0 0; color: var(--muted); font-size: .7rem; line-height: 1.65; }
 .rework-panel { display: grid; grid-template-columns: minmax(180px, .55fr) minmax(0, 1fr); align-items: center; gap: 24px; margin: 0 0 17px; border: 1px solid var(--line); border-radius: 16px; padding: 25px 27px; background: #fff; box-shadow: var(--shadow); }
 .rework-stat { display: grid; gap: 8px; }
 .rework-stat .eyebrow { margin: 0; color: var(--accent-dark); }
@@ -108,6 +124,28 @@ button span { margin-left: 13px; font-size: 1rem; }
 .bar-track { height: 8px; border-radius: 99px; overflow: hidden; background: #eceef4; }
 .bar { height: 100%; min-width: 2px; border-radius: 99px; background: linear-gradient(90deg, #5146d8, #a59ef0); }
 .chart-detail { grid-column: 2; color: #8991a0; font-size: .65rem; }
+.calendar-panel { margin-top: 18px; padding: 29px; }
+.calendar-panel .table-heading { margin-bottom: 8px; }
+.calendar-help { margin: 0 0 18px; color: var(--muted); font-size: .78rem; line-height: 1.6; }
+.calendar-summary { display: flex; gap: 28px; margin-bottom: 20px; }
+.calendar-summary > div { display: grid; gap: 5px; }
+.calendar-summary span { color: var(--muted); font-size: .58rem; font-weight: 740; letter-spacing: .08em; }
+.calendar-summary strong { font-size: 1.25rem; font-weight: 650; }
+.calendar-scroll { overflow-x: auto; padding: 2px 0 5px; }
+.calendar-layout { display: flex; align-items: flex-start; gap: 9px; width: max-content; min-width: 100%; }
+.calendar-weekdays { display: grid; grid-template-rows: repeat(7, 13px); gap: 4px; color: var(--muted); font-size: .56rem; line-height: 13px; }
+.commit-calendar { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 13px); grid-auto-columns: 13px; gap: 4px; }
+.calendar-day, .calendar-legend i { display: block; width: 13px; height: 13px; border-radius: 4px; }
+.calendar-day { border: 1px solid rgba(46, 39, 96, .04); }
+.calendar-day:hover { outline: 2px solid var(--ink); outline-offset: 1px; }
+.level-0 { background: #eeedf1; }
+.level-1 { background: #d9d5f4; }
+.level-2 { background: #b7aeeb; }
+.level-3 { background: #8878db; }
+.level-4 { background: #5146d8; }
+.calendar-legend { display: flex; align-items: center; justify-content: flex-end; gap: 5px; margin-top: 13px; color: var(--muted); font-size: .62rem; }
+.calendar-legend span:first-child { margin-right: 3px; }
+.calendar-legend span:last-child { margin-left: 3px; }
 .hotspot-panel { margin-top: 16px; padding: 26px 27px 25px; }
 .hotspot-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 30px; }
 .hotspot-row { min-width: 0; display: grid; gap: 8px; }
@@ -220,6 +258,8 @@ tbody tr:hover { background: #fafaff; }
   .metric-label { font-size: .57rem; letter-spacing: .08em; }
   .metric-card strong { margin-top: 18px; font-size: 1.75rem; }
   .metric-card small { font-size: .66rem; }
+  .file-spread-panel { padding: 20px 17px; }
+  .spread-rates { grid-template-columns: 1fr; }
   .insight-panel { grid-template-columns: 34px minmax(0, 1fr); gap: 12px; margin-bottom: 33px; padding: 15px; }
   .rework-panel { grid-template-columns: 1fr; gap: 14px; padding: 18px; }
   .rework-copy { border-left: 0; border-top: 1px solid var(--line); padding: 14px 0 0; }
@@ -228,6 +268,8 @@ tbody tr:hover { background: #fafaff; }
   .section-kicker { font-size: .55rem; letter-spacing: .09em; }
   .section-kicker span:last-child { text-align: right; }
   .chart-panel, .commit-panel { padding: 20px 17px; }
+  .calendar-panel { padding: 20px 17px; }
+  .calendar-summary { gap: 20px; }
   .session-panel { padding: 20px 17px; }
   .session-form { grid-template-columns: 1fr; }
   .session-summary { grid-template-columns: 1fr; }

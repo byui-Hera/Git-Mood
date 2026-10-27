@@ -16,6 +16,7 @@ DAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
 # These words are guesses that a commit may be about a fix.
 FIX_WORDS = ("fix", "bug", "oops", "error")
 FOLLOW_UP_HOURS = 24
+HIGH_FILE_SPREAD = 4
 
 
 def make_rows(summary, names):
@@ -78,6 +79,57 @@ def mark_rapid_followups(commits):
     return followups, file_changing_commits
 
 
+def summarize_file_spread(commits):
+    """Count how many different files change in each active hour."""
+    hour_groups = {}
+
+    for commit in commits:
+        commit_time = datetime.fromisoformat(commit["date"])
+        hour_key = commit_time.strftime("%Y-%m-%d %H")
+        if hour_key not in hour_groups:
+            hour_groups[hour_key] = {"files": set(), "commits": 0, "fixes": 0}
+
+        group = hour_groups[hour_key]
+        group["files"].update(commit.get("files", []))
+        group["commits"] += 1
+        if any(word in commit["message"].lower() for word in FIX_WORDS):
+            group["fixes"] += 1
+
+    hours = list(hour_groups.values())
+    high_spread = [hour for hour in hours if len(hour["files"]) >= HIGH_FILE_SPREAD]
+    lower_spread = [hour for hour in hours if len(hour["files"]) < HIGH_FILE_SPREAD]
+    average_files = sum(len(hour["files"]) for hour in hours) / len(hours) if hours else 0
+
+    def make_group_summary(groups):
+        commits_count = sum(hour["commits"] for hour in groups)
+        fixes_count = sum(hour["fixes"] for hour in groups)
+        fix_rate = round(fixes_count / commits_count * 100) if commits_count else 0
+        return {
+            "hours": len(groups),
+            "commits": commits_count,
+            "fixes": fixes_count,
+            "fix_percent": fix_rate,
+        }
+
+    high_summary = make_group_summary(high_spread)
+    lower_summary = make_group_summary(lower_spread)
+    enough_data = (
+        high_summary["hours"] >= 3
+        and lower_summary["hours"] >= 3
+        and high_summary["commits"] >= 5
+        and lower_summary["commits"] >= 5
+    )
+
+    return {
+        "active_hours": len(hours),
+        "average_files_per_hour": round(average_files, 1),
+        "high_spread_threshold": HIGH_FILE_SPREAD,
+        "high_spread": high_summary,
+        "lower_spread": lower_summary,
+        "comparison_available": enough_data,
+    }
+
+
 def make_report(repo_folder, author_name):
     """Read a project and prepare the website results."""
     # Read the commit history with the same function used by the terminal tool.
@@ -86,6 +138,9 @@ def make_report(repo_folder, author_name):
         raise ValueError(
             "No commits found. Check the project folder or leave the author field blank."
         )
+
+    # Compare hours with many changed files to other active hours.
+    file_spread = summarize_file_spread(commits)
 
     # Count commits followed by another edit to the same file within a day.
     rapid_followups, file_changing_commits = mark_rapid_followups(commits)
@@ -165,6 +220,7 @@ def make_report(repo_folder, author_name):
         "hours": make_rows(hour_counts, hour_names),
         "days": make_rows(day_counts, day_names),
         "hotspots": hotspots,
+        "file_spread": file_spread,
         "totals": {
             "commits": len(commits),
             "fixes": total_fixes,

@@ -114,6 +114,29 @@
         </article>
       </div>
 
+      <section class="panel file-spread-panel" aria-labelledby="file-spread-title">
+        <div class="table-heading">
+          <div>
+            <p class="eyebrow">A CLUE ABOUT TASK SWITCHING</p>
+            <h3 id="file-spread-title">Files changed in the same hour</h3>
+          </div>
+          <span class="table-note">FILE ACTIVITY ONLY</span>
+        </div>
+        <p class="file-spread-intro">Git-Mood counts different files changed in each hour with commits. Four or more files is marked as a high-spread hour.</p>
+        <div class="file-spread-summary">
+          <div class="file-spread-number"><strong id="files-per-hour">—</strong><span>files per active hour</span></div>
+          <p id="file-spread-note" class="file-spread-note">Analyze a project to see this report.</p>
+        </div>
+        <div id="file-spread-comparison" class="file-spread-comparison hidden">
+          <p>Commit messages with fix words:</p>
+          <div class="spread-rates">
+            <div><span>4+ files in an hour</span><strong id="high-spread-rate">—</strong><small id="high-spread-detail"></small></div>
+            <div><span>Fewer than 4 files</span><strong id="low-spread-rate">—</strong><small id="low-spread-detail"></small></div>
+          </div>
+        </div>
+        <p class="file-spread-caution">Several files can be part of one task. Git cannot tell if you switched tasks or felt stressed. Use this as a clue, not a diagnosis.</p>
+      </section>
+
       <section class="panel session-panel" aria-labelledby="session-title">
         <div class="table-heading">
           <div>
@@ -189,6 +212,32 @@
           <div id="day-chart" class="chart"></div>
         </section>
       </div>
+
+      <section class="panel calendar-panel" aria-labelledby="calendar-title">
+        <div class="table-heading">
+          <div>
+            <p class="eyebrow">YOUR CODING CALENDAR</p>
+            <h3 id="calendar-title">Commits by day</h3>
+          </div>
+          <span id="calendar-range" class="table-note">Last 13 weeks</span>
+        </div>
+        <p class="calendar-help">Each square is one day. Darker squares mean more commits.</p>
+        <div class="calendar-summary" aria-label="Calendar summary">
+          <div><span>DAYS WITH COMMITS</span><strong id="active-days">—</strong></div>
+          <div><span>MOST COMMITS IN ONE DAY</span><strong id="busiest-day">—</strong></div>
+        </div>
+        <div class="calendar-scroll">
+          <div class="calendar-layout">
+            <div class="calendar-weekdays" aria-hidden="true">
+              <span>Sun</span><span></span><span>Tue</span><span></span><span>Thu</span><span></span><span>Sat</span>
+            </div>
+            <div id="commit-calendar" class="commit-calendar" role="group" aria-label="Commit count for each day in the last 13 weeks"></div>
+          </div>
+        </div>
+        <div class="calendar-legend" aria-hidden="true">
+          <span>Fewer</span><i class="level-0"></i><i class="level-1"></i><i class="level-2"></i><i class="level-3"></i><i class="level-4"></i><span>More</span>
+        </div>
+      </section>
 
       <section class="panel hotspot-panel" aria-labelledby="hotspot-title">
         <div class="table-heading">
