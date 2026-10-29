@@ -90,6 +90,7 @@ function showReport(report, author, repo) {
   showFileSpread(report.file_spread);
   showRapidRework(report.totals);
   showHotspots(report.hotspots);
+  showFilePairs(report.file_pairs);
   document.querySelector("#author-label").textContent = author ? `Git author: ${author}` : "All authors";
 
   drawChart("#hour-chart", report.hours);
@@ -307,6 +308,41 @@ function showHotspots(files) {
     detail.textContent = `Changed again ${timesText} within 24 hours`;
 
     row.append(top, bar, detail);
+    list.append(row);
+  }
+}
+
+function showFilePairs(pairs) {
+  const list = document.querySelector("#file-pairs");
+  list.replaceChildren();
+
+  if (!pairs.length) {
+    const message = document.createElement("p");
+    message.className = "hotspot-empty";
+    message.textContent = "No commits changed two or more files.";
+    list.append(message);
+    return;
+  }
+
+  for (const pair of pairs) {
+    const row = document.createElement("div");
+    row.className = "file-pair-row";
+
+    const files = document.createElement("div");
+    files.className = "file-pair-names";
+    const firstFile = document.createElement("code");
+    firstFile.textContent = pair.first_file;
+    const plus = document.createElement("span");
+    plus.textContent = "+";
+    const secondFile = document.createElement("code");
+    secondFile.textContent = pair.second_file;
+    files.append(firstFile, plus, secondFile);
+
+    const count = document.createElement("span");
+    count.className = "file-pair-count";
+    count.textContent = `${pair.commits} ${pair.commits === 1 ? "commit" : "commits"}`;
+
+    row.append(files, count);
     list.append(row);
   }
 }

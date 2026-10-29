@@ -130,6 +130,31 @@ def summarize_file_spread(commits):
     }
 
 
+def summarize_file_pairs(commits):
+    """Find files that appear together in the same commit."""
+    pair_counts = {}
+
+    # Each commit is one saved change. Compare every pair of files in it.
+    for commit in commits:
+        files = sorted(set(commit.get("files", [])), key=str.lower)
+
+        for first_index in range(len(files)):
+            for second_index in range(first_index + 1, len(files)):
+                pair = (files[first_index], files[second_index])
+                pair_counts[pair] = pair_counts.get(pair, 0) + 1
+
+    # Show the pairs with the most shared commits first.
+    sorted_pairs = sorted(
+        pair_counts.items(),
+        key=lambda item: (-item[1], item[0][0].lower(), item[0][1].lower()),
+    )[:8]
+
+    return [
+        {"first_file": pair[0], "second_file": pair[1], "commits": count}
+        for pair, count in sorted_pairs
+    ]
+
+
 def make_report(repo_folder, author_name):
     """Read a project and prepare the website results."""
     # Read the commit history with the same function used by the terminal tool.
@@ -141,6 +166,8 @@ def make_report(repo_folder, author_name):
 
     # Compare hours with many changed files to other active hours.
     file_spread = summarize_file_spread(commits)
+    # Find pairs of files that Git shows in the same commit.
+    file_pairs = summarize_file_pairs(commits)
 
     # Count commits followed by another edit to the same file within a day.
     rapid_followups, file_changing_commits = mark_rapid_followups(commits)
@@ -220,6 +247,7 @@ def make_report(repo_folder, author_name):
         "hours": make_rows(hour_counts, hour_names),
         "days": make_rows(day_counts, day_names),
         "hotspots": hotspots,
+        "file_pairs": file_pairs,
         "file_spread": file_spread,
         "totals": {
             "commits": len(commits),

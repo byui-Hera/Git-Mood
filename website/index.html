@@ -250,6 +250,19 @@
         <div id="hotspot-list" class="hotspot-list"></div>
       </section>
 
+      <section class="panel connections-panel" aria-labelledby="connections-title">
+        <div class="table-heading">
+          <div>
+            <p class="eyebrow">FILES IN THE SAME COMMIT</p>
+            <h3 id="connections-title">Files often changed together</h3>
+          </div>
+          <span class="table-note">UP TO 8 PAIRS</span>
+        </div>
+        <p class="connections-help">Each row shows two files that appeared together in a commit. This can hint that the files are related.</p>
+        <div id="file-pairs" class="file-pairs"></div>
+        <p class="connections-caution">This only shows what was saved together. It does not prove the files depend on each other.</p>
+      </section>
+
       <section class="panel commit-panel">
         <div class="table-heading"><div><p class="eyebrow">YOUR HISTORY</p><h3>Recent commits</h3></div><span class="table-note">Fix labels are guesses</span></div>
         <div class="table-wrap">

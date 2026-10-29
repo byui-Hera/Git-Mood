@@ -28,6 +28,7 @@ To analyze one author's commits, enter their Git author name in the optional aut
 - Possible fixes guessed from commit-message words.
 - Files changed again within 24 hours.
 - The eight files changed most often.
+- File pairs that appear together in commits.
 - Lines added and removed.
 - Work sessions you record: time spent, task difficulty, and how you felt.
 - A commit message coach that checks for length, vague wording, and an action word.
@@ -35,6 +36,8 @@ To analyze one author's commits, enter their Git author name in the optional aut
 The message coach checks your draft in the browser. It does not save or send the draft.
 
 The file activity report compares hours with four or more different files to other hours. It also compares commit messages that contain possible-fix words. This may hint at task switching, but Git cannot tell if the files were part of different tasks or how you felt.
+
+The file connections report counts file pairs that appear in the same commit. It can hint that the files are related, but it does not prove they depend on each other.
 
 Session notes are saved in your browser for the selected project. Git-Mood counts commits whose timestamps fall inside a session. Work without a commit may not appear, and a commit time may not match when you worked.
 
