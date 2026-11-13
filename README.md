@@ -13,9 +13,18 @@ You need Python 3 and Git installed.
    python web_app.py
    ```
 
-3. Open this address in your browser: <http://127.0.0.1:8000>
+3. Open this Git-Mood-only address in your browser: <http://127.0.0.1:8765>
 4. Enter the folder path of a Git project and select **Analyze project**.
 5. Press **Ctrl+C** in PowerShell when you want to stop the website.
+
+The link is local to your computer; it is not a public GitHub Pages link. Git-Mood uses port `8765` so it does not conflict with projects that use port `8000`. If that port is already in use, choose another one when starting the app:
+
+```powershell
+$env:GIT_MOOD_PORT = 8766
+python web_app.py
+```
+
+Then open <http://127.0.0.1:8766>.
 
 To analyze one author's commits, enter their Git author name in the optional author box. Leave it blank to include all authors.
 

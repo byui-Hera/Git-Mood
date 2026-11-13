@@ -5,6 +5,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 import json
+import os
 
 from git_mood import add_commit, get_commits
 
@@ -17,6 +18,7 @@ DAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",
 FIX_WORDS = ("fix", "bug", "oops", "error")
 FOLLOW_UP_HOURS = 24
 HIGH_FILE_SPREAD = 4
+PORT = int(os.environ.get("GIT_MOOD_PORT", "8765"))
 
 
 def make_rows(summary, names):
@@ -38,7 +40,6 @@ def make_rows(summary, names):
                 "removed": counts["removed"],
             }
         )
-
     return rows
 
 
@@ -289,6 +290,10 @@ class GitMoodHandler(SimpleHTTPRequestHandler):
             self.send_json(200, report)
         except ValueError as error:
             self.send_json(400, {"error": str(error)})
+        except Exception:
+            # Keep unexpected server errors as JSON so the browser can explain
+            # the failure instead of receiving a truncated response.
+            self.send_json(500, {"error": "Git-Mood could not prepare the report."})
 
     def send_json(self, status, data):
         """Send results back to the browser."""
@@ -311,9 +316,9 @@ class GitMoodHandler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     # Run the website only on this computer.
-    address = ("127.0.0.1", 8000)
+    address = ("127.0.0.1", PORT)
     server = ThreadingHTTPServer(address, GitMoodHandler)
-    print("Git-Mood is running at http://127.0.0.1:8000")
+    print(f"Git-Mood is running at http://127.0.0.1:{PORT}")
     print("Press Ctrl+C to stop the website.")
     try:
         server.serve_forever()

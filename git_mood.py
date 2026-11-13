@@ -21,11 +21,23 @@ def get_commits(repo_folder, author_name):
     if author_name:
         command.append(f"--author={author_name}")
 
-    result = subprocess.run(
-        command,
-        capture_output=True,
-        text=True,
-    )
+    try:
+        result = subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            stdin=subprocess.DEVNULL,
+            timeout=15,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+        )
+    except subprocess.TimeoutExpired as error:
+        raise ValueError(
+            "Git-Mood timed out while reading Git history. Check that the project folder is a local Git repository."
+        ) from error
+    except OSError as error:
+        raise ValueError(
+            "Git-Mood could not run Git. Make sure Git is installed and available on PATH."
+        ) from error
 
     # If Git found nothing, return an empty list.
     if result.returncode != 0 or not result.stdout.strip():
