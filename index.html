@@ -1,14 +1,57 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="refresh" content="0; url=./website/">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Git-Mood</title>
-    <link rel="canonical" href="https://byui-hera.github.io/Git-Mood/website/">
-  </head>
-  <body>
-    <p>Opening Git-Mood…</p>
-    <p><a href="./website/">Open the Git-Mood website</a></p>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Git-Mood — Understand Your Git Patterns</title>
+  <style>
+    :root { color-scheme: dark; --ink:#f7f4ed; --muted:#b7b9c3; --bg:#11131a; --panel:#1b1e29; --accent:#ffb86b; --line:#303545; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; color:var(--ink); background:radial-gradient(circle at 20% 0%,#292b43 0,transparent 42%),var(--bg); }
+    main { width:min(1080px,calc(100% - 40px)); margin:auto; padding:34px 0 70px; }
+    nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:80px; }
+    .brand { color:var(--ink); text-decoration:none; font-weight:800; letter-spacing:.04em; }
+    nav a:last-child { color:var(--accent); text-decoration:none; }
+    .eyebrow { color:var(--accent); letter-spacing:.18em; font-size:.75rem; font-weight:800; }
+    h1 { max-width:760px; margin:12px 0 20px; font-size:clamp(3rem,8vw,6.7rem); line-height:.94; letter-spacing:-.07em; }
+    .lead { max-width:650px; color:var(--muted); font-size:1.2rem; line-height:1.65; }
+    .actions { display:flex; gap:14px; flex-wrap:wrap; margin:30px 0 80px; }
+    .button { display:inline-block; padding:13px 18px; border:1px solid var(--accent); border-radius:999px; color:#171820; background:var(--accent); text-decoration:none; font-weight:800; }
+    .button.secondary { color:var(--ink); background:transparent; border-color:var(--line); }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .card { min-height:170px; padding:24px; background:rgba(27,30,41,.86); border:1px solid var(--line); border-radius:20px; }
+    .card strong { display:block; margin-bottom:10px; font-size:1.15rem; }
+    .card p { color:var(--muted); line-height:1.55; }
+    .report { margin-top:18px; padding:28px; border:1px solid var(--line); border-radius:24px; background:#171a24; }
+    .report h2 { margin-top:0; }
+    .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    .metric { padding:18px; border-radius:14px; background:var(--panel); }
+    .metric b { display:block; font-size:1.8rem; color:var(--accent); }
+    .metric span { color:var(--muted); font-size:.9rem; }
+    footer { margin-top:44px; color:var(--muted); font-size:.9rem; }
+    @media (max-width:720px) { nav { margin-bottom:50px; } .grid,.metrics { grid-template-columns:1fr 1fr; } }
+    @media (max-width:480px) { main { width:min(100% - 28px,1080px); } .grid,.metrics { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <main>
+    <nav><a class="brand" href="./">GIT-MOOD</a><a href="https://github.com/byui-Hera/Git-Mood">View source ↗</a></nav>
+    <section>
+      <div class="eyebrow">A GIT HISTORY COMPANION</div>
+      <h1>See the mood inside your commits.</h1>
+      <p class="lead">Git-Mood turns commit history into a readable report about work rhythm, rapid rework, file hotspots, and commit-message quality.</p>
+      <div class="actions"><a class="button" href="https://github.com/byui-Hera/Git-Mood">Explore the project ↗</a><a class="button secondary" href="https://github.com/byui-Hera/Git-Mood#run-the-tests">See how it runs</a></div>
+    </section>
+    <section class="grid" aria-label="Git-Mood features">
+      <article class="card"><strong>Work patterns</strong><p>Compare activity by hour and weekday to spot productive rhythms and late-night pushes.</p></article>
+      <article class="card"><strong>Change hotspots</strong><p>Find files and file pairs that change most often, including rapid follow-up edits.</p></article>
+      <article class="card"><strong>Clearer commits</strong><p>Use the message coach to catch vague wording, long summaries, and missing action words.</p></article>
+    </section>
+    <section class="report" aria-label="Example report preview">
+      <div class="eyebrow">REPORT PREVIEW</div><h2>One view of a project’s rhythm</h2>
+      <div class="metrics"><div class="metric"><b>128</b><span>commits</span></div><div class="metric"><b>14</b><span>active days</span></div><div class="metric"><b>7</b><span>hotspot files</span></div><div class="metric"><b>92%</b><span>message clarity</span></div></div>
+    </section>
+    <footer>Public recruiter preview. Full Git-history analysis runs locally so repository data stays on the user’s computer.</footer>
+  </main>
+</body>
 </html>
