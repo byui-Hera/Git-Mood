@@ -56,7 +56,7 @@ Git-Mood runs on your computer. Your repository history stays local, and session
 
 ## Website preview
 
-The standalone website is published at <https://byui-hera.github.io/Git-Mood/>. The public preview shows the interface and message coach. Project analysis requires the local Python server because a GitHub Pages website cannot read folders from a visitor's computer.
+The standalone website is published at <https://byui-hera.github.io/Git-Mood/index.html>. The public preview shows the interface and message coach. Project analysis requires the local Python server because a GitHub Pages website cannot read folders from a visitor's computer.
 
 ## Run the tests
 
