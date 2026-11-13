@@ -54,6 +54,10 @@ Session notes are saved in your browser for the selected project. Git-Mood count
 
 Git-Mood runs on your computer. Your repository history stays local, and session notes stay in your browser. A “possible fix” is guessed from commit-message words. A file changed again within 24 hours may just be normal work. These results show patterns; they do not prove that mood or work time caused bugs.
 
+## Website preview
+
+The standalone website is published at <https://byui-hera.github.io/Git-Mood/>. The public preview shows the interface and message coach. Project analysis requires the local Python server because a GitHub Pages website cannot read folders from a visitor's computer.
+
 ## Run the tests
 
 From the Git-Mood folder, run:
