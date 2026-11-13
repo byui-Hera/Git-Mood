@@ -4,6 +4,7 @@ const analyzeButton = document.querySelector("#analyze-button");
 const results = document.querySelector("#results");
 const sessionForm = document.querySelector("#session-form");
 const API_URL = "/api/analyze";
+const isPublicPreview = window.location.hostname.endsWith("github.io");
 let currentSessions = [];
 let currentCommits = [];
 let currentRepoKey = "";
@@ -11,8 +12,20 @@ let currentRepoKey = "";
 // Start the session form with today's date and time.
 sessionForm.elements.start.value = getLocalDateTime();
 
+if (isPublicPreview) {
+  document.querySelector("#analyze-title").textContent = "Explore the website";
+  document.querySelector("#analyze .help").textContent =
+    "This public preview shows the Git-Mood interface. Run the local Python server to analyze a Git project.";
+  document.querySelector("#repo-path").disabled = true;
+  document.querySelector("#author-name").disabled = true;
+  analyzeButton.disabled = true;
+  statusMessage.textContent =
+    "Public preview mode. Run 'python web_app.py' in the Git-Mood folder to create a report.";
+}
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (isPublicPreview) return;
   statusMessage.textContent = "Reading your commits...";
   statusMessage.classList.remove("error");
   analyzeButton.disabled = true;
@@ -44,7 +57,7 @@ form.addEventListener("submit", async (event) => {
     statusMessage.textContent = "Your report is ready.";
   } catch (error) {
     statusMessage.textContent = error instanceof TypeError
-      ? "Git-Mood could not connect. Start it with 'python web_app.py', then open http://127.0.0.1:8000."
+      ? "Git-Mood could not connect. Start it with 'python web_app.py', then open http://127.0.0.1:8765."
       : error.message;
     statusMessage.classList.add("error");
     results.classList.add("hidden");
